@@ -62,7 +62,8 @@ function paritywignerd(J,λ,λ′,fac)
 end
 
 # ╔═╡ 3643c393-adfb-4bfc-81a1-3bc55f9eb18c
-ℂij(J,λ,λ′,YX,fac) = paritywignerd(J,λ,λ′,fac) / Ks(λ, -YX) * Kt(λ′, -YX)
+ℂij(J,λ,λ′,Yⱼs, Yⱼt,fac) = 
+	paritywignerd(J,λ,λ′,fac) / Ks(λ, Yⱼs) * Kt(λ′, Yⱼt)
 
 # ╔═╡ 0a1a9546-0b65-41f5-b45c-fe3deef0bfa9
 Yj(j,YX) = abs(j - YX) - j
@@ -80,10 +81,7 @@ function ℂ(J;ηX,js,jt)
     ηs = ηπ^3 * ηX
 	λmin = ηX==1 ? 1 : 0
 	# 
-	((js<Yₓ) || (jt < Yₓ)) &&
-		error("not implemented, need ℂij(J, λ, λ′, Yjs, Yjt, ηs)")
-	# 
-    m = [ℂij(J, λ, λ′, Yₓ, ηs) for λ in λmin:js, λ′ in λmin:jt]
+    m = [ℂij(J, λ, λ′, Yⱼs, Yⱼt, ηs) for λ in λmin:js, λ′ in λmin:jt]
     return m
 end
 
@@ -119,7 +117,7 @@ md"""
 
 # ╔═╡ dcfe1ec0-7d82-4e4e-828d-7d30e25aadba
 md"""
-### $J^{PC}=2^{-+}\,\rho_3 \pi$
+### $J^{PC}=2^{-+}\,f_2 \pi$
 """
 
 # ╔═╡ 7139fd4b-3e6c-4c2b-92ac-89188f6e6214
@@ -127,11 +125,38 @@ md"""
 
 # ╔═╡ d79f9672-cb49-4021-820b-f767d62263c6
 md"""
-### $J^{PC}=3^{++}$
+### $J^{PC}=3^{++} \rho_3 \pi$
 """
 
 # ╔═╡ eb90abab-603e-4a59-9af4-40f8db08f249
 ℂa3 = cosmetics.(replacesincos.(ℂ(3; ηX=-1, js=3, jt=3) .* λXt^3))
+
+# ╔═╡ 92ee9179-a2c0-4ba9-9555-2e9583d72156
+md"""
+## Cases to be checked: j<J
+"""
+
+# ╔═╡ eb2bacaa-5f88-41cc-a5b3-2667beda18b2
+md"""
+### $J^{PC}=1^{++}\,\sigma \pi \leftrightarrow \rho \pi$
+"""
+
+# ╔═╡ 87febb4c-7553-4cf7-80ee-d822e8938aa9
+replacesincos.(ℂ(1; ηX=-1, js=0, jt=0))
+
+# ╔═╡ a03c5169-f81f-4fca-b7ed-f415094693d9
+replacesincos.(ℂ(1; ηX=-1, js=1, jt=0))
+
+# ╔═╡ 6e0a0576-54fa-494d-8d95-2714466be9f1
+replacesincos.(ℂ(1; ηX=-1, js=0, jt=1))
+
+# ╔═╡ 69bd1da4-0479-4034-8fb4-8ac8048d0f64
+md"""
+### $J^{PC}=2^{-+}\,\rho \pi$
+"""
+
+# ╔═╡ a52f082e-7a33-46e7-ba97-36d09785c4e1
+replacesincos.(ℂ(2; ηX=-1, js=1, jt=1))
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -477,5 +502,12 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╠═7139fd4b-3e6c-4c2b-92ac-89188f6e6214
 # ╟─d79f9672-cb49-4021-820b-f767d62263c6
 # ╠═eb90abab-603e-4a59-9af4-40f8db08f249
+# ╟─92ee9179-a2c0-4ba9-9555-2e9583d72156
+# ╟─eb2bacaa-5f88-41cc-a5b3-2667beda18b2
+# ╠═87febb4c-7553-4cf7-80ee-d822e8938aa9
+# ╠═a03c5169-f81f-4fca-b7ed-f415094693d9
+# ╠═6e0a0576-54fa-494d-8d95-2714466be9f1
+# ╟─69bd1da4-0479-4034-8fb4-8ac8048d0f64
+# ╠═a52f082e-7a33-46e7-ba97-36d09785c4e1
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
